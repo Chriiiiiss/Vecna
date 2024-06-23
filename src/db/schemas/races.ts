@@ -12,7 +12,9 @@ export const subRaceTable = pgTable('sub_races_table', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
   description: text('description').notNull(),
-  raceId: integer('race_id').references(() => racesTable.id),
+  raceId: integer('race_id')
+    .notNull()
+    .references(() => racesTable.id),
 });
 
 export const racesRelations = relations(racesTable, ({ many }) => ({
