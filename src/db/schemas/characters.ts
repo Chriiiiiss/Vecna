@@ -2,7 +2,8 @@ import { char, integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
 import { usersTable } from './users';
 import { classTable } from './class';
 import { relations } from 'drizzle-orm';
-import { racesTable } from './races';
+import { racesTable, subRaceTable } from './races';
+import { traitsToCharacterTable } from './traits';
 
 export const charactersTable = pgTable('characters_table', {
   id: serial('id').primaryKey(),
@@ -20,6 +21,7 @@ export const charactersTable = pgTable('characters_table', {
   raceId: integer('race_id')
     .notNull()
     .references(() => racesTable.id),
+  subRaceId: integer('sub_race_id').references(() => subRaceTable.id),
   classId: integer('class_id')
     .notNull()
     .references(() => classTable.id),
@@ -44,21 +46,31 @@ export const charactersTable = pgTable('characters_table', {
   level: integer('level').notNull(),
 });
 
-export const charactersRelations = relations(charactersTable, ({ one }) => ({
-  user: one(usersTable, {
-    fields: [charactersTable.user_id],
-    references: [usersTable.id],
-  }),
-  class: one(classTable, {
-    fields: [charactersTable.classId],
-    references: [classTable.id],
-  }),
+export const charactersRelations = relations(
+  charactersTable,
+  ({ one, many }) => ({
+    user: one(usersTable, {
+      fields: [charactersTable.user_id],
+      references: [usersTable.id],
+    }),
+    class: one(classTable, {
+      fields: [charactersTable.classId],
+      references: [classTable.id],
+    }),
 
-  race: one(racesTable, {
-    fields: [charactersTable.raceId],
-    references: [racesTable.id],
-  }),
-}));
+    race: one(racesTable, {
+      fields: [charactersTable.raceId],
+      references: [racesTable.id],
+    }),
+
+    subRace: one(subRaceTable, {
+      fields: [charactersTable.subRaceId],
+      references: [subRaceTable.id],
+    }),
+
+    traits: many(traitsToCharacterTable),
+  })
+);
 
 export type InsertCharacter = typeof charactersTable.$inferInsert;
 export type SelectCharacter = typeof charactersTable.$inferSelect;

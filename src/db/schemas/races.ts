@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
 import { charactersTable } from './characters';
+import { traitsTable } from './traits';
 
 export const racesTable = pgTable('races_table', {
   id: serial('id').primaryKey(),
@@ -20,13 +21,16 @@ export const subRaceTable = pgTable('sub_races_table', {
 export const racesRelations = relations(racesTable, ({ many }) => ({
   subRaces: many(subRaceTable),
   characters: many(charactersTable),
+  traits: many(traitsTable),
 }));
 
-export const subRaceRelations = relations(subRaceTable, ({ one }) => ({
+export const subRaceRelations = relations(subRaceTable, ({ one, many }) => ({
   races: one(racesTable, {
     fields: [subRaceTable.raceId],
     references: [racesTable.id],
   }),
+  traitsTable: many(traitsTable),
+  char: many(charactersTable),
 }));
 
 export type InsertRace = typeof racesTable.$inferInsert;
