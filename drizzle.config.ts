@@ -7,6 +7,7 @@ const schemas = [
   './src/db/schemas/class.ts',
   './src/db/schemas/spellsToClass.ts',
   './src/db/schemas/characters.ts',
+  './src/db/schemas/races.ts',
 ];
 
 export default defineConfig({
