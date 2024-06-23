@@ -1,0 +1,1 @@
+ALTER TABLE "spells_table" ALTER COLUMN "range" SET DATA TYPE integer;
