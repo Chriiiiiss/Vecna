@@ -42,11 +42,7 @@ export const getTraitByRace = async (race: Race) => {
 
     console.log(`Traits found for ${raceRow.name}!, returning...`);
 
-    return traits.map((trait) => ({
-      race: raceRow.name,
-      traitName: trait.trait.name,
-      traitDesc: trait.trait.description,
-    }));
+    return traits.map((trait) => trait.trait);
   } catch (error) {
     console.log('Error in getTraitByRace');
     console.error(error);

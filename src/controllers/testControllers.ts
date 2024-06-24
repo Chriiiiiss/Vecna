@@ -3,7 +3,7 @@ import { getTraitByRace } from '../services/testService';
 import { RaceEnum } from '../constants/constants';
 
 export const handleTest = async (req: Request, res: Response) => {
-  const traits = await getTraitByRace(RaceEnum.Dwarf);
+  const traits = await getTraitByRace(RaceEnum.Elf);
 
   res.json(traits);
 };
