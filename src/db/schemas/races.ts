@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm';
 import { integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
 import { charactersTable } from './characters';
 import { traitsTable } from './traits';
+import { RaceEnum } from '../../constants/constants';
 
 export const racesTable = pgTable('races_table', {
   id: serial('id').primaryKey(),
@@ -11,7 +12,17 @@ export const racesTable = pgTable('races_table', {
 
 export const subRaceTable = pgTable('sub_races_table', {
   id: serial('id').primaryKey(),
-  name: text('name').notNull(),
+  name: text('name', {
+    enum: [
+      RaceEnum.Dwarf,
+      RaceEnum.Elf,
+      RaceEnum.Gnome,
+      RaceEnum.HalfElf,
+      RaceEnum.HalfOrc,
+      RaceEnum.Halfling,
+      RaceEnum.Human,
+    ],
+  }).notNull(),
   description: text('description').notNull(),
   raceId: integer('race_id')
     .notNull()
